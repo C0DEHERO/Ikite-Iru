@@ -4,12 +4,8 @@ var state = {
   clock: null,
   controls: null,
   goban: {
-    bottomLeft: null,
     intersections: [[]],
-    lSpacing: null,
-    mesh: null,
-    topRight: null,
-    wSpacing: null
+    mesh: null
   },
   lights: [],
   markers: [],
@@ -61,19 +57,18 @@ function init() {
 
     calcIntersections(state.goban);
 
+    state.goban.mesh.geometry.computeBoundingBox();
+
     var planeGeo = new THREE.PlaneBufferGeometry(
-      Math.abs(state.goban.bottomLeft.x - state.goban.topRight.x),
-      Math.abs(state.goban.bottomLeft.z - state.goban.topRight.z)
+      state.goban.mesh.geometry.boundingBox.getSize().x,
+      state.goban.mesh.geometry.boundingBox.getSize().z
     );
 
     planeGeo.rotateX(-Math.PI / 2);
 
     state.plane = new THREE.Mesh(planeGeo, new THREE.MeshBasicMaterial({visible: false}));
-    state.plane.position.setY(state.goban.bottomLeft.y);
+    state.plane.position.setY(state.goban.mesh.geometry.boundingBox.max.y);
     state.scene.add(state.plane);
-
-    addMarker(state.goban.bottomLeft, 0x00ff00);
-    addMarker(state.goban.topRight, 0xff0000);
   });
 
   loader.load("models/grid.json", function(geometry, materials) {
@@ -175,22 +170,22 @@ function calcIntersections(goban) {
   const wSpacingRatio = 22 / 424.2;
   const lSpacingRatio = 23.7 / 454.5;
 
-  goban.wSpacing = width * wSpacingRatio;
-  goban.lSpacing = length * lSpacingRatio;
+  var wSpacing = width * wSpacingRatio;
+  var lSpacing = length * lSpacingRatio;
 
-  var wBorderWidth = (width - (goban.wSpacing * 18)) / 2;
-  var lBorderWidth = (length - (goban.lSpacing * 18)) / 2;
+  var wBorderWidth = (width - (wSpacing * 18)) / 2;
+  var lBorderWidth = (length - (lSpacing * 18)) / 2;
 
   var bottomRow = [];
   for (let i = 0; i < 19; i++) {
-    let newX = (goban.bottomLeft.x + wBorderWidth) + i * goban.wSpacing;
+    let newX = (goban.bottomLeft.x + wBorderWidth) + i * wSpacing;
     bottomRow[i] = goban.bottomLeft.clone().setX(newX);
   }
 
   for (let i = 0; i < 19; i++) {
     let row = [];
     for (let vertex of bottomRow) {
-      let newZ = (goban.bottomLeft.z - lBorderWidth) - i * goban.lSpacing;
+      let newZ = (goban.bottomLeft.z - lBorderWidth) - i * lSpacing;
       row.push(vertex.clone().setZ(newZ));
     }
     goban.intersections[i] = row;
@@ -204,18 +199,15 @@ function calcIntersections(goban) {
 }
 
 function closestIntersection(goban, point) {
-  var x = goban.intersections[0][0].x;
-  var z = goban.intersections[0][0].z;
   var result = null;
 
   for (let i = 0; i < 19; i++) {
-    if (Math.abs((x + i * goban.wSpacing) - point.x) < goban.wSpacing / 2) {
-      for (let j = 0; j < 19; j++) {
-        if (Math.abs((z - j * goban.lSpacing) - point.z) < goban.lSpacing / 2) {
-          // switch i and j, because outer loop goes through (array) rows and
-          // inner loop goes through columns
-          result = goban.intersections[j][i];
-        }
+    for (let j = 0; j < 19; j++) {
+      if (goban.intersections[j][i].distanceTo(point) <
+          state.stone.geometry.boundingBox.getSize().x / 2) {
+        // switch i and j, because outer loop goes through (array) rows and
+        // inner loop goes through columns
+        result = goban.intersections[j][i];
       }
     }
   }
@@ -262,9 +254,6 @@ function onMouseMove(event) {
         closestIntersect.y + state.stone.geometry.boundingBox.getSize().y / 2,
         closestIntersect.z
       );
-    } else {
-      state.preview = false;
-      state.stone.material.visible = false;
     }
   } else {
     state.preview = false;
