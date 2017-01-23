@@ -54,7 +54,7 @@ function init() {
   state.mouse = new THREE.Vector2();
 
   var loader = new THREE.JSONLoader();
-  loader.load("models/goban/board.json", function(geometry, materials) {
+  loader.load("models/board.json", function(geometry, materials) {
     var material = new THREE.MultiMaterial(materials);
     state.goban.mesh = new THREE.Mesh(geometry, material);
     state.scene.add(state.goban.mesh);
@@ -76,18 +76,18 @@ function init() {
     addMarker(state.goban.topRight, 0xff0000);
   });
 
-  loader.load("models/goban/grid.json", function(geometry, materials) {
+  loader.load("models/grid.json", function(geometry, materials) {
     var grid = new THREE.Mesh(geometry, materials[0]);
     // state.goban.mesh.localToWorld(state.goban.mesh.position);
     state.goban.mesh.add(grid);
   });
 
-  loader.load("models/goban/hoshi.json", function(geometry, materials) {
+  loader.load("models/hoshi.json", function(geometry, materials) {
     var hoshi = new THREE.Mesh(geometry, materials[0]);
     state.goban.mesh.add(hoshi);
   });
 
-  loader.load("models/goban/stone.json", function(geometry, materials) {
+  loader.load("models/stone.json", function(geometry, materials) {
     var material = materials[0];
     state.stoneMaterials.white = material.clone();
     material.opacity = 0.7;
