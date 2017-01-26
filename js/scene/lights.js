@@ -11,7 +11,7 @@ Lighting.prototype = {
   },
   addPoint: function(color, pos, parent) {
     let light = new THREE.PointLight(color);
-    light.position.set(pos);
+    light.position.copy(pos);
     this.lights.push(light);
     parent.add(light);
   },

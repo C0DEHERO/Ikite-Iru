@@ -67,7 +67,8 @@ function closestIntersection(intersections, point, radius) {
       if (intersections[j][i].distanceTo(point) < radius) {
         // switch i and j, because outer loop goes through (array) rows and
         // inner loop goes through columns
-        result = {x: i, y: j};
+        result = {x: j, y: i};
+        //result = intersections[j][i];
       }
     }
   }

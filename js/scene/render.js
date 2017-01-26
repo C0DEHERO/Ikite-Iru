@@ -9,7 +9,7 @@ function Render(camera, renderParams) {
   this.raycaster = new THREE.Raycaster();
   this.renderer = new THREE.WebGLRenderer(renderParams);
   this.markers = [];
-  this.markersEnabled = false;
+  this.markersEnabled = true;
   this.markerGeometry = null;
   this.mouse = new THREE.Vector2();
 }
@@ -22,7 +22,7 @@ Render.prototype = {
   addMarker: function(pos, col) {
     if (this.markersEnabled) {
       if (this.markerGeometry == null) {
-        this.markerGeometry = new THREE.BoxGeometry(1, 1, 1);
+        this.markerGeometry = new THREE.BoxGeometry(1,1,1);
       }
       var material = new THREE.MeshBasicMaterial({color: col});
       var cube = new THREE.Mesh(this.markerGeometry, material);
@@ -38,9 +38,14 @@ Render.prototype = {
     this.clock.start();
   },
   render: function() {
-    this.camControls.update(this.clock.getDelta());
-    this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.render);
+    var render = this;
+    render.startClock();
+    var animate = function() {
+      render.camControls.update(render.clock.getDelta());
+      render.renderer.render(render.scene, render.camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
   },
   initControls: function() {
     Object.assign(this.camControls, {

@@ -7,9 +7,12 @@ Model.prototype = {
   geometry: null,
   material: null,
   load: function(url, loader) {
-    loader.load(url, function(geometry, materials) {
-      this.geometry = geometry;
-      this.material = new THREE.MultiMaterial(materials);
+    var model = this;
+    loader.loader.load(url, function(geometry, materials) {
+      model.geometry = geometry;
+      model.material = new THREE.MultiMaterial(materials);
+      //model.geometry = new THREE.BoxGeometry(5,5,5);
+      //model.material = new THREE.MeshBasicMaterial(0xffffff);
     });
     loader.objects.push(this);
     return this;
