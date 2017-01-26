@@ -9,7 +9,7 @@ function Render(camera, renderParams) {
   this.raycaster = new THREE.Raycaster();
   this.renderer = new THREE.WebGLRenderer(renderParams);
   this.markers = [];
-  this.markersEnabled = true;
+  this.markersEnabled = false;
   this.markerGeometry = null;
   this.mouse = new THREE.Vector2();
 }

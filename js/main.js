@@ -7,7 +7,7 @@ function init() {
   var game = new Game();
 
   var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(300,10,0);
+  camera.position.set(0,200,300);
 
   var render = new Render(camera,{antialias: true});
   render.renderer.setSize(window.innerWidth, window.innerHeight);
