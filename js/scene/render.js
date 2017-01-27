@@ -5,6 +5,7 @@ function Render(camera, renderParams) {
   this.initControls();
   this.clock = new THREE.Clock(false);
   this.helpers = [];
+  this.helpersEnabled = true;
   this.scene = new THREE.Scene();
   this.raycaster = new THREE.Raycaster();
   this.renderer = new THREE.WebGLRenderer(renderParams);
@@ -16,8 +17,10 @@ function Render(camera, renderParams) {
 
 Render.prototype = {
   addHelper: function(helper) {
-    this.helpers.push(helper);
-    this.scene.add(helper);
+    if (this.helpersEnabled) {
+      this.helpers.push(helper);
+      this.scene.add(helper);
+    }
   },
   addMarker: function(pos, col) {
     if (this.markersEnabled) {

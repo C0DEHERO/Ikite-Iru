@@ -19,7 +19,6 @@ function init() {
 
   render.addHelper(new THREE.AxisHelper(1000));
 
-//  var game = new Game();
   var board = new Board();
   game.board = board;
 
@@ -88,7 +87,6 @@ function setCallbacks(loader, game) {
     loader.game.previewStone.calculateRadius();
 
     loader.render.addMarker(new THREE.Vector3(0, 50, 0), 0xffffff);
-
 
     for (let row of loader.game.intersections) {
       for (let point of row) {

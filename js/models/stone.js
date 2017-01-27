@@ -30,11 +30,10 @@ Stone.prototype.load = function(url, loader) {
 Stone.prototype.makeMesh = function() {
   if (this.black) {
     this.material = this.blackMaterial;
-    this.mesh = new THREE.Mesh(this.geometry, this.blackMaterial);
   } else {
     this.material = this.whiteMaterial;
-    this.mesh = new THREE.Mesh(this.geometry, this.whiteMaterial);
   }
+  this.mesh = new THREE.Mesh(this.geometry, this.material);
   if (this.mesh.geometry.boundingBox == null) {
     this.mesh.geometry.computeBoundingBox();
   }
