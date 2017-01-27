@@ -12,6 +12,7 @@ function Render(camera, renderParams) {
   this.markers = [];
   this.markersEnabled = false;
   this.markerGeometry = null;
+  this.markerMaterials = {};
   this.mouse = new THREE.Vector2();
 }
 
@@ -27,8 +28,10 @@ Render.prototype = {
       if (this.markerGeometry == null) {
         this.markerGeometry = new THREE.BoxGeometry(1, 1, 1);
       }
-      var material = new THREE.MeshBasicMaterial({color: col});
-      var cube = new THREE.Mesh(this.markerGeometry, material);
+      if (this.markerMaterials[col] == null) {
+        this.markerMaterials[col] = new THREE.MeshBasicMaterial({color: col});
+      }
+      var cube = new THREE.Mesh(this.markerGeometry, this.markerMaterials[col]);
       cube.position.copy(pos);
       this.markers.push(cube);
       this.scene.add(cube);
