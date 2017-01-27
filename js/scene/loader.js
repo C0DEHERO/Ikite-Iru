@@ -13,28 +13,16 @@ Loader.prototype = {
     this.loader = loader;
     this.loader.objects = this.objects;
   },
-  onStart: function(url, itemsLoaded, itemsTotal) {
-  },/*
-  onLoad: function() {
-
-    for(let object of this.objects) {
-      object.makeMesh();
-    }
-
-    this.game.board.getRaycastPlane();
-    this.game.getIntersections();
-
-    for(let object of this.objects) {
-    this.render.scene.add(object.mesh);
-    }
-
-    //    document.addEventListener("mousedown", this.onMouseDown);
-    //    document.addEventListener("mousemove", this.onMouseMove);
-    document.body.appendChild(this.render.renderer.domElement);
-    this.render.render();
-  },*/
-  onProgress: function(url, itemsLoaded, itemsTotal) {
+  setOnStart: function(callback) {
+    THREE.DefaultLoadingManager.onStart = callback;
   },
-  onError: function(url) {
+  setOnLoad: function(callback) {
+    THREE.DefaultLoadingManager.onLoad = callback;
+  },
+  setOnProgress: function(callback) {
+    THREE.DefaultLoadingManager.onProgress = callback;
+  },
+  setOnError: function(callback) {
+    THREE.DefaultLoadingManager.onError = callback;
   }
 };

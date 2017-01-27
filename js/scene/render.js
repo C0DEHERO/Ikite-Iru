@@ -22,7 +22,7 @@ Render.prototype = {
   addMarker: function(pos, col) {
     if (this.markersEnabled) {
       if (this.markerGeometry == null) {
-        this.markerGeometry = new THREE.BoxGeometry(1,1,1);
+        this.markerGeometry = new THREE.BoxGeometry(1, 1, 1);
       }
       var material = new THREE.MeshBasicMaterial({color: col});
       var cube = new THREE.Mesh(this.markerGeometry, material);
@@ -44,7 +44,7 @@ Render.prototype = {
       render.camControls.update(render.clock.getDelta());
       render.renderer.render(render.scene, render.camera);
       requestAnimationFrame(animate);
-    }
+    };
     animate();
   },
   initControls: function() {
