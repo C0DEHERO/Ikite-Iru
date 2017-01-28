@@ -1,7 +1,7 @@
 function calcIntersections(mesh) {
-  var vertices = mesh.geometry.vertices;
-  var topVertices = [];
-  var maxY = vertices[0].y;
+  let vertices = mesh.geometry.vertices;
+  let topVertices = [];
+  let maxY = vertices[0].y;
 
   for (let vertex of vertices) {
     maxY = vertex > maxY ? vertex : maxY;
@@ -13,8 +13,8 @@ function calcIntersections(mesh) {
     }
   }
 
-  var bottomLeft = topVertices[0];
-  var topRight = topVertices[0];
+  let bottomLeft = topVertices[0];
+  let topRight = topVertices[0];
 
   for (let vertex of topVertices) {
     if (vertex.x <= bottomLeft.x && vertex.z >= bottomLeft.z) {
@@ -26,20 +26,20 @@ function calcIntersections(mesh) {
     }
   }
 
-  var width = Math.abs(bottomLeft.x - topRight.x);
-  var length = Math.abs(bottomLeft.z - topRight.z);
+  const width = Math.abs(bottomLeft.x - topRight.x);
+  const length = Math.abs(bottomLeft.z - topRight.z);
 
   // ratios of line spacing to board edge length
   const wSpacingRatio = 22 / 424.2;
   const lSpacingRatio = 23.7 / 454.5;
 
-  var wSpacing = width * wSpacingRatio;
-  var lSpacing = length * lSpacingRatio;
+  const wSpacing = width * wSpacingRatio;
+  const lSpacing = length * lSpacingRatio;
 
-  var wBorderWidth = (width - (wSpacing * 18)) / 2;
-  var lBorderWidth = (length - (lSpacing * 18)) / 2;
+  const wBorderWidth = (width - (wSpacing * 18)) / 2;
+  const lBorderWidth = (length - (lSpacing * 18)) / 2;
 
-  var bottomRow = [];
+  let bottomRow = [];
   for (let i = 0; i < 19; i++) {
     let newX = (bottomLeft.x + wBorderWidth) + i * wSpacing;
     bottomRow[i] = bottomLeft.clone().setX(newX);
@@ -68,10 +68,20 @@ function closestIntersection(intersections, point, radius) {
         // switch i and j, because outer loop goes through (array) rows and
         // inner loop goes through columns
         result = {x: j, y: i};
-        //result = intersections[j][i];
       }
     }
   }
 
   return result;
+}
+
+function markIntersections(game, render) {
+  if (!render.markersEnabled) {
+    return;
+  }
+  for (let row of game.intersections) {
+    for (let point of row) {
+      render.addMarker(point, 0xff0000);
+    }
+  }
 }

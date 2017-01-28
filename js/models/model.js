@@ -6,13 +6,15 @@ function Model() {
 Model.prototype = {
   geometry: null,
   material: null,
-  load: function(url, loader) {
+  load: function(url, loader, dontPush) {
     var model = this;
     loader.loader.load(url, function(geometry, materials) {
       model.geometry = geometry;
       model.material = new THREE.MultiMaterial(materials);
     });
-    loader.objects.push(this);
+    if(!dontPush) {
+      loader.objects.push(this);
+    }
     return this;
   },
   makeMesh: function() {

@@ -55,7 +55,7 @@ function setCallbacks(loader, game) {
 
     render.raycaster.setFromCamera(render.mouse, render.camera);
 
-    var intersects = render.raycaster.intersectObject(game.board.raycastPlane, false);
+    var intersects = render.getRayIntersect();
     if (intersects.length > 0) {
       var intersect = intersects[0];
       var closestIntersect = closestIntersection(
@@ -63,8 +63,6 @@ function setCallbacks(loader, game) {
         intersect.point,
         game.previewStone.radius
       );
-
-      console.log(closestIntersect);
 
       if (closestIntersect != null) {
         game.previewStone.show();
@@ -79,25 +77,13 @@ function setCallbacks(loader, game) {
   var onLoad = function() {
     for (let object of loader.objects) {
       object.makeMesh();
-    }
-
-    loader.game.board.getRaycastPlane();
-    loader.render.scene.add(loader.game.board.raycastPlane);
-    loader.game.getIntersections();
-    loader.game.previewStone.calculateRadius();
-
-    loader.render.addMarker(new THREE.Vector3(0, 50, 0), 0xffffff);
-
-    for (let row of loader.game.intersections) {
-      for (let point of row) {
-        loader.render.addMarker(point, 0xff0000);
-      }
-    }
-
-    for (let object of loader.objects) {
-      console.log("add to scene");
       loader.render.scene.add(object.mesh);
     }
+
+    loader.render.makeRaycastPlane(loader.game.board);
+    loader.game.getIntersections();
+
+    markIntersections(loader.game, loader.render);
 
     loader.render.initControls();
 

@@ -6,7 +6,7 @@ function PreviewStone(isBlack) {
 PreviewStone.prototype = Object.create(Stone.prototype);
 PreviewStone.prototype.load = function(url, loader) {
   Stone.prototype.load.call(this, url, loader);
-  Stone.prototype.load(url, loader);
+  Stone.prototype.load(url, loader, true);
   return this;
 };
 PreviewStone.prototype.makeMesh = function() {
