@@ -73,6 +73,9 @@ GameGraphics.prototype = {
     this.previewStone.mesh.translateY(this.previewStone.height / 2);
   },
   removeStone: function(parent, intersection) {
+    if (this.stones[intersection.x][intersection.y] === null) {
+      return;
+    }
     this.board.mesh.remove(this.stones[intersection.x][intersection.y].mesh);
     delete this.stones[intersection.x][intersection.y];
     this.stones[intersection.x][intersection.y] = null;

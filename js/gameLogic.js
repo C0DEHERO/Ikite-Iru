@@ -57,7 +57,9 @@ GameLogic.prototype = {
 
     for (let i = 0; i < 4; i++) {
       let group = getNeighborGroup(point, conf, i);
-      if (group === null || group.length < 1 || conf.at(group[0]) === color) {
+      if (group === null ||
+          group.length < 1 ||
+          Math.abs(conf.at(group[0])) === color) {
         continue;
       }
       if (this.isDead(group, conf)) {
@@ -66,10 +68,10 @@ GameLogic.prototype = {
       }
     }
 
-    if (captured.length < 1) {
+    if (captured.length === 0) {
       conf = this.getBoardConf();
       conf[point.x][point.y] = color;
-      let playedGroup = floodFill(point, conf, color, -1);
+      let playedGroup = floodFill(point, conf, color, -color);
       if (this.isDead(playedGroup, conf)) {
         return false;
       }

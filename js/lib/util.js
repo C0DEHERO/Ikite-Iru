@@ -38,7 +38,7 @@ function getNeighborGroup(point, conf, dir) {
   // if not null, zero, or undefined
   if (conf.at(directions[dir])) {
     let color = conf.at(directions[dir]);
-    let group = floodFill(directions[dir], conf, color, -1);
+    let group = floodFill(directions[dir], conf, color, -color);
     return group;
   }
 
