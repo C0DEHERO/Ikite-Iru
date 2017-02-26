@@ -8,8 +8,8 @@ function init() {
   var gameLogic = new GameLogic();
 
   var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 300, 250);
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
+  camera.position.set(0, 389.30, 155.03);
+  camera.rotation.set(-1.22, 0, 0);
 
   var render = new Render(camera, {antialias: true});
   render.renderer.setSize(window.innerWidth, window.innerHeight);
