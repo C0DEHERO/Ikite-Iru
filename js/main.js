@@ -83,7 +83,7 @@ function setCallbacks(loader, graphics, camera) {
       case 32:
         graphics.pass();
         break;
-      case 70:
+      case 67:
         if (loader.render.camControls.enabled) {
           loader.render.camControls.enabled = false;
         } else {
