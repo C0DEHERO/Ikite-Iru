@@ -12,7 +12,7 @@ Model.prototype = {
       model.geometry = geometry;
       model.material = new THREE.MultiMaterial(materials);
     });
-    if(!dontPush) {
+    if (!dontPush) {
       loader.objects.push(this);
     }
     return this;

@@ -4,7 +4,8 @@ init();
 
 function init() {
   var loader = new Loader();
-  var game = new Game();
+  var gameGraphics = new GameGraphics();
+  var gameLogic = new GameLogic();
 
   var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 200, 300);
@@ -20,27 +21,29 @@ function init() {
   render.addHelper(new THREE.AxisHelper(1000));
 
   var board = new Board();
-  game.board = board;
+  gameGraphics.board = board;
 
   loader.render = render;
-  loader.game = game;
+  loader.graphics = gameGraphics;
   loader.loader = new THREE.JSONLoader();
 
   board.load("models/board.json", loader);
   new Grid().load("models/grid.json", loader);
   new Hoshi().load("models/hoshi.json", loader);
   var previewStone = new PreviewStone(true).load("models/stone.json", loader);
-  game.previewStone = previewStone;
+  gameGraphics.previewStone = previewStone;
 
-  setCallbacks(loader, game);
+  setCallbacks(loader, gameGraphics);
+  // TODO: use callback to gameLogic.playStone instead
+  gameGraphics.logic = gameLogic;
 }
 
-function setCallbacks(loader, game) {
+function setCallbacks(loader, graphics) {
   var onMouseDown = function(event) {
     event.preventDefault();
 
-    if (game.previewStone.material.visible) {
-      game.addStone(game.board.mesh);
+    if (graphics.previewStone.material.visible) {
+      graphics.playStone(graphics.board.mesh);
     }
   };
 
@@ -59,20 +62,26 @@ function setCallbacks(loader, game) {
     if (intersects.length > 0) {
       var intersect = intersects[0];
       var closestIntersect = closestIntersection(
-        game.intersections,
+        graphics.intersections,
         intersect.point,
-        game.previewStone.radius
+        graphics.previewStone.radius
       );
 
       if (closestIntersect != null) {
-        game.previewStone.show();
+        graphics.previewStone.show();
 
-        game.movePreviewStone(closestIntersect);
+        graphics.movePreviewStone(closestIntersect);
       }
     } else {
-      game.previewStone.hide();
+      graphics.previewStone.hide();
     }
   };
+
+  var onKeyDown = function(event) {
+    if (event.keyCode === 32) {
+      graphics.pass();
+    }
+  }
 
   var onLoad = function() {
     for (let object of loader.objects) {
@@ -80,8 +89,8 @@ function setCallbacks(loader, game) {
       loader.render.scene.add(object.mesh);
     }
 
-    loader.render.makeRaycastPlane(loader.game.board);
-    loader.game.getIntersections();
+    loader.render.makeRaycastPlane(loader.graphics.board);
+    loader.graphics.getIntersections();
 
     markIntersections(loader.game, loader.render);
 
@@ -89,6 +98,7 @@ function setCallbacks(loader, game) {
 
     document.addEventListener("mousedown", onMouseDown);
     document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("keydown", onKeyDown);
 
     loader.render.attachRenderer(document.body);
     loader.render.render();

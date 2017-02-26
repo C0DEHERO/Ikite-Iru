@@ -7,6 +7,7 @@ Stone.prototype = Object.create(Model.prototype);
 Stone.prototype.blackMaterial = null;
 Stone.prototype.whiteMaterial = null;
 Stone.prototype.radius = null;
+Stone.height = null;
 Stone.prototype.load = function(url, loader, dontPush) {
   Model.prototype.load.call(this, url, loader, dontPush);
   if (this.blackMaterial == null) {
@@ -36,5 +37,8 @@ Stone.prototype.makeMesh = function() {
   }
   if (this.radius == null) {
     this.radius = this.mesh.geometry.boundingBox.getSize().x / 2;
+  }
+  if (this.height == null) {
+    this.height = this.mesh.geometry.boundingBox.getSize().y;
   }
 };

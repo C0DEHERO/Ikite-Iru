@@ -1,7 +1,7 @@
 /* global THREE */
 function Loader() {
   this.render;
-  this.game;
+  this.graphics;
   this.onMouseDown;
   this.onMouseMove;
   this.objects = [];
