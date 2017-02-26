@@ -5,7 +5,7 @@ function Render(camera, renderParams) {
   this.initControls();
   this.clock = new THREE.Clock(false);
   this.helpers = [];
-  this.helpersEnabled = true;
+  this.helpersEnabled = false;
   this.scene = new THREE.Scene();
   this.raycaster = new THREE.Raycaster();
   this.raycastPlane = null;
