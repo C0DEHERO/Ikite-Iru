@@ -81,7 +81,7 @@ function setCallbacks(loader, graphics) {
     if (event.keyCode === 32) {
       graphics.pass();
     }
-  }
+  };
 
   var onLoad = function() {
     for (let object of loader.objects) {
