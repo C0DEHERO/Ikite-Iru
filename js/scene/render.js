@@ -56,6 +56,7 @@ Render.prototype = {
   },
   initControls: function() {
     Object.assign(this.camControls, {
+      enabled: false,
       constrainVertical: false,
       lat: 120,
       lon: -150,

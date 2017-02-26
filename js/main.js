@@ -8,7 +8,8 @@ function init() {
   var gameLogic = new GameLogic();
 
   var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 200, 300);
+  camera.position.set(0, 300, 250);
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
 
   var render = new Render(camera, {antialias: true});
   render.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -16,7 +17,7 @@ function init() {
   var lighting = new Lighting();
   lighting.addAmbient(0x404040, render.scene);
   lighting.addPoint(0x0000ff, render.camera.position, render.camera);
-  lighting.addPoint(0xffffff, new THREE.Vector3(0, 500, 0), render.scene);
+  lighting.addPoint(0xffffff, new THREE.Vector3(0, 10000, 0), render.scene, 0.8);
 
   render.addHelper(new THREE.AxisHelper(1000));
 
@@ -33,12 +34,12 @@ function init() {
   var previewStone = new PreviewStone(true).load("models/stone.json", loader);
   gameGraphics.previewStone = previewStone;
 
-  setCallbacks(loader, gameGraphics);
+  setCallbacks(loader, gameGraphics, camera);
   // TODO: use callback to gameLogic.playStone instead
   gameGraphics.logic = gameLogic;
 }
 
-function setCallbacks(loader, graphics) {
+function setCallbacks(loader, graphics, camera) {
   var onMouseDown = function(event) {
     event.preventDefault();
 
@@ -78,8 +79,17 @@ function setCallbacks(loader, graphics) {
   };
 
   var onKeyDown = function(event) {
-    if (event.keyCode === 32) {
-      graphics.pass();
+    switch (event.keyCode) {
+      case 32:
+        graphics.pass();
+        break;
+      case 70:
+        if (loader.render.camControls.enabled) {
+          loader.render.camControls.enabled = false;
+        } else {
+          loader.render.camControls.enabled = true;
+        }
+        break;
     }
   };
 
