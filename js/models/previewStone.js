@@ -19,7 +19,7 @@ PreviewStone.prototype.makeMesh = function() {
   this.blackMaterial.transparent = true;
 };
 PreviewStone.prototype.makeStone = function() {
-  var stone = new Stone(this.black);
+  let stone = new Stone(this.black);
   stone.makeMesh();
   stone.mesh.position.copy(this.mesh.position);
   return stone;

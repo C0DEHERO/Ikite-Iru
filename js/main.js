@@ -3,25 +3,25 @@
 init();
 
 function init() {
-  var loader = new Loader();
-  var gameGraphics = new GameGraphics();
-  var gameLogic = new GameLogic();
+  let loader = new Loader();
+  let gameGraphics = new GameGraphics();
+  let gameLogic = new GameLogic();
 
-  var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 389.30, 155.03);
   camera.rotation.set(-1.22, 0, 0);
 
-  var render = new Render(camera, {antialias: true});
+  let render = new Render(camera, {antialias: true});
   render.renderer.setSize(window.innerWidth, window.innerHeight);
 
-  var lighting = new Lighting();
+  let lighting = new Lighting();
   lighting.addAmbient(0x404040, render.scene);
   lighting.addPoint(0x0000ff, render.camera.position, render.camera);
   lighting.addPoint(0xffffff, new THREE.Vector3(0, 10000, 0), render.scene, 0.8);
 
   render.addHelper(new THREE.AxisHelper(1000));
 
-  var board = new Board();
+  let board = new Board();
   gameGraphics.board = board;
 
   loader.render = render;
@@ -31,7 +31,7 @@ function init() {
   board.load("models/board.json", loader);
   new Grid().load("models/grid.json", loader);
   new Hoshi().load("models/hoshi.json", loader);
-  var previewStone = new PreviewStone(true).load("models/stone.json", loader);
+  let previewStone = new PreviewStone(true).load("models/stone.json", loader);
   gameGraphics.previewStone = previewStone;
 
   setCallbacks(loader, gameGraphics, camera);
@@ -40,7 +40,7 @@ function init() {
 }
 
 function setCallbacks(loader, graphics, camera) {
-  var onMouseDown = function(event) {
+  let onMouseDown = function(event) {
     event.preventDefault();
 
     if (graphics.previewStone.material.visible) {
@@ -48,9 +48,9 @@ function setCallbacks(loader, graphics, camera) {
     }
   };
 
-  var onMouseMove = function(event) {
+  let onMouseMove = function(event) {
     event.preventDefault();
-    var render = loader.render;
+    let render = loader.render;
 
     render.mouse.set(
       (event.clientX / window.innerWidth) * 2 - 1,
@@ -59,10 +59,10 @@ function setCallbacks(loader, graphics, camera) {
 
     render.raycaster.setFromCamera(render.mouse, render.camera);
 
-    var intersects = render.getRayIntersect();
+    let intersects = render.getRayIntersect();
     if (intersects.length > 0) {
-      var intersect = intersects[0];
-      var closestIntersect = closestIntersection(
+      let intersect = intersects[0];
+      let closestIntersect = closestIntersection(
         graphics.intersections,
         intersect.point,
         graphics.previewStone.radius
@@ -78,7 +78,7 @@ function setCallbacks(loader, graphics, camera) {
     }
   };
 
-  var onKeyDown = function(event) {
+  let onKeyDown = function(event) {
     switch (event.keyCode) {
       case 32:
         graphics.pass();
@@ -93,7 +93,7 @@ function setCallbacks(loader, graphics, camera) {
     }
   };
 
-  var onLoad = function() {
+  let onLoad = function() {
     for (let object of loader.objects) {
       object.makeMesh();
       loader.render.scene.add(object.mesh);

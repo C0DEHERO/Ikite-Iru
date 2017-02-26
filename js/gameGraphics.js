@@ -15,7 +15,7 @@ function GameGraphics() {
 
 GameGraphics.prototype = {
   addStone: function(parent, intersection, isBlack) {
-    var stone = new Stone(isBlack);
+    let stone = new Stone(isBlack);
     stone.makeMesh();
     let x = intersection.x;
     let y = intersection.y;

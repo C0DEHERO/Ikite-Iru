@@ -45,7 +45,7 @@ function calcIntersections(mesh) {
     bottomRow[i] = bottomLeft.clone().setX(newX);
   }
 
-  var intersections = [[]];
+  let intersections = [[]];
 
   for (let i = 0; i < 19; i++) {
     let row = [];
@@ -60,7 +60,7 @@ function calcIntersections(mesh) {
 }
 
 function closestIntersection(intersections, point, radius) {
-  var result = null;
+  let result = null;
 
   for (let i = 0; i < 19; i++) {
     for (let j = 0; j < 19; j++) {

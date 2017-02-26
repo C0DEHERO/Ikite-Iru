@@ -7,7 +7,7 @@ Model.prototype = {
   geometry: null,
   material: null,
   load: function(url, loader, dontPush) {
-    var model = this;
+    let model = this;
     loader.loader.load(url, function(geometry, materials) {
       model.geometry = geometry;
       model.material = new THREE.MultiMaterial(materials);

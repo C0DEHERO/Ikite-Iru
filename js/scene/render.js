@@ -32,7 +32,7 @@ Render.prototype = {
       if (this.markerMaterials[col] == null) {
         this.markerMaterials[col] = new THREE.MeshBasicMaterial({color: col});
       }
-      var cube = new THREE.Mesh(this.markerGeometry, this.markerMaterials[col]);
+      let cube = new THREE.Mesh(this.markerGeometry, this.markerMaterials[col]);
       cube.position.copy(pos);
       this.markers.push(cube);
       this.scene.add(cube);
@@ -45,9 +45,9 @@ Render.prototype = {
     this.clock.start();
   },
   render: function() {
-    var render = this;
+    let render = this;
     render.startClock();
-    var animate = function() {
+    let animate = function() {
       render.camControls.update(render.clock.getDelta());
       render.renderer.render(render.scene, render.camera);
       requestAnimationFrame(animate);
@@ -71,7 +71,7 @@ Render.prototype = {
   makeRaycastPlane: function(mesh) {
     mesh.geometry.computeBoundingBox();
 
-    var planeGeo = new THREE.PlaneBufferGeometry(
+    let planeGeo = new THREE.PlaneBufferGeometry(
       mesh.geometry.boundingBox.getSize().x,
       mesh.geometry.boundingBox.getSize().z
     );
