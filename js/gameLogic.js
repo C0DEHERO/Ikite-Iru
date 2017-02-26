@@ -52,10 +52,11 @@ GameLogic.prototype = {
       }
     }
 
-    let conf = this.getBoardConf();
-    conf[point.x][point.y] = color;
+    let conf;
 
     for (let i = 0; i < 4; i++) {
+      conf = this.getBoardConf();
+      conf[point.x][point.y] = color;
       let group = getNeighborGroup(point, conf, i);
       if (group === null || group.length < 1 || conf.at(group[0]) === color) {
         continue;
