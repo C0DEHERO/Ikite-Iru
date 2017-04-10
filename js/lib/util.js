@@ -59,3 +59,14 @@ function getOpponentNeighborGroups(point, conf) {
   }
   return groups;
 }
+
+function convertColor(color) {
+  switch (color) {
+    // isBlack === 1
+    // !isBlack === 2
+    case 1: return true;
+    case 2: return false;
+    case true: return 1;
+    case false: return 2;
+  }
+}

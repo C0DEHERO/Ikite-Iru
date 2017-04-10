@@ -5,6 +5,7 @@ function GameLogic() {
   this.whitePrisoners = 0;
   this.gameTree = null;
   this.moveNumber = 0;
+  this.currentCollor = 1;
 
   for (let i = 0; i < 19; i++) {
     this.board[i] = [];
@@ -17,6 +18,7 @@ function GameLogic() {
 }
 
 GameLogic.prototype = {
+  // action success and captured stone should go back to interface
   at: function(point) {
     return this.board[point.x][point.y];
   },

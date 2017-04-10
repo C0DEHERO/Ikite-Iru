@@ -1,12 +1,14 @@
 /* global THREE */
 function Loader() {
-  this.render;
-  this.graphics;
+  // this.render;
+  // this.graphics;
   this.onMouseDown;
   this.onMouseMove;
   this.objects = [];
   this.loader;
 }
+
+// make loader queue with function that passes `this` to model object load function
 
 Loader.prototype = {
   setLoader: function(loader) {

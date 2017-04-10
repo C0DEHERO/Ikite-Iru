@@ -3,43 +3,16 @@
 init();
 
 function init() {
-  let loader = new Loader();
-  let gameGraphics = new GameGraphics();
-  let gameLogic = new GameLogic();
+  let handler = new GameHandler();
+  let graphics = new WebGLGraphics();
+  // let logic = new GameLogic();
 
-  let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 389.30, 155.03);
-  camera.rotation.set(-1.22, 0, 0);
-
-  let render = new Render(camera, {antialias: true});
-  render.renderer.setSize(window.innerWidth, window.innerHeight);
-
-  let lighting = new Lighting();
-  lighting.addAmbient(0x404040, render.scene);
-  lighting.addPoint(0x0000ff, render.camera.position, render.camera);
-  lighting.addPoint(0xffffff, new THREE.Vector3(0, 10000, 0), render.scene, 0.8);
-
-  render.addHelper(new THREE.AxisHelper(1000));
-
-  let board = new Board();
-  gameGraphics.board = board;
-
-  loader.render = render;
-  loader.graphics = gameGraphics;
-  loader.loader = new THREE.JSONLoader();
-
-  board.load("models/board.json", loader);
-  new Grid().load("models/grid.json", loader);
-  new Hoshi().load("models/hoshi.json", loader);
-  let previewStone = new PreviewStone(true).load("models/stone.json", loader);
-  gameGraphics.previewStone = previewStone;
+  handler.addInterface("graphics", graphics);
 
   setCallbacks(loader, gameGraphics, camera);
-  // TODO: use callback to gameLogic.playStone instead
-  gameGraphics.logic = gameLogic;
 }
 
-function setCallbacks(loader, graphics, camera) {
+function setCallbacks(loader, graphics, gameHandler) {
   let onMouseDown = function(event) {
     event.preventDefault();
 
@@ -50,32 +23,18 @@ function setCallbacks(loader, graphics, camera) {
 
   let onMouseMove = function(event) {
     event.preventDefault();
-    let render = loader.render;
+    /*
+      send(gameHandler, {
+      type: "mouseEvent",
+      data: {x: event.clientX, y: event.clientY}
+      });
+    */
 
-    render.mouse.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
-    );
-
-    render.raycaster.setFromCamera(render.mouse, render.camera);
-
-    let intersects = render.getRayIntersect();
-    if (intersects.length > 0) {
-      let intersect = intersects[0];
-      let closestIntersect = closestIntersection(
-        graphics.intersections,
-        intersect.point,
-        graphics.previewStone.radius
-      );
-
-      if (closestIntersect != null) {
-        graphics.previewStone.show();
-
-        graphics.movePreviewStone(closestIntersect);
-      }
-    } else {
-      graphics.previewStone.hide();
-    }
+    gameHandler.routeMsg({
+      type: "mouseMove",
+      recipient: "graphics",
+      data: {x: event.clientX, y: event.clientY}
+    });
   };
 
   let onKeyDown = function(event) {
